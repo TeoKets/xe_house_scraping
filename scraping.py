@@ -15,6 +15,7 @@ class Scrapper:
 		self.driver = webdriver.Chrome(options=self.options)
 		self.driver.get("https://www.xe.gr/property/results?transaction_name=rent&item_type=re_residence&geo_place_ids[]=ChIJ7eAoFPQ4qBQRqXTVuBXnugk")
 
+
 	def wait_for_page(self):
 		time.sleep(random.choice(range(15, 20)))
 	def wait(self):
@@ -25,7 +26,7 @@ class Scrapper:
 			self.wait_for_page()
 			all_houses = self.driver.find_elements(By.CSS_SELECTOR, '.common-ad-body')
 			for house in all_houses:
-				self.wait()
+
 				try:
 					title = house.find_element(By.CSS_SELECTOR, 'h3[data-testid="property-ad-title"]').text
 				except:
@@ -37,7 +38,7 @@ class Scrapper:
 				except:
 					price = "N/A"
 					print("error in price")
-				self.wait()
+
 				try:
 					price_per_sqm = house.find_element(By.CSS_SELECTOR, value="span.property-ad-price-per-sqm").text
 				except:
@@ -50,15 +51,15 @@ class Scrapper:
 					level = "N/A"
 					print("error in level")
 
-				self.wait()
+
 				try:
 					bedrooms = house.find_element(By.CSS_SELECTOR,
 												  value='span[data-testid="property-ad-bedrooms"]').text
 				except:
 					bedrooms = "N/A"
 					print("error in bedrooms")
-
 				self.wait()
+
 				try:
 					bathrooms = house.find_element(By.CSS_SELECTOR,
 												   value='span[data-testid="property-ad-bathrooms"]').text
@@ -66,7 +67,7 @@ class Scrapper:
 					bathrooms = "N/A"
 					print("error in bathrooms")
 
-				self.wait()
+
 				try:
 					construction = house.find_element(By.CSS_SELECTOR,
 													  value='span[data-testid="property-ad-construction-year"]').text
@@ -123,5 +124,12 @@ class Scrapper:
 		self.scrapper()
 		self.scroll_full()
 		self.next_page()
+
+	def scrap_all_pages(self):
+		self.wait_for_page()
+		page_numbers=int(self.driver.find_element(By.XPATH,value='//*[@id="application_container"]/div[2]/div/div[3]/div/div[3]/nav/ul/li[8]/a').text)
+		for i in range(page_numbers):
+			print(f"page {i+1}")
+			self.scrap_page()
 
 

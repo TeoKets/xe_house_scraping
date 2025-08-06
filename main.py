@@ -2,7 +2,7 @@ from scraping import Scrapper
 
 scraper=Scrapper()
 
-scraper.scrap_page()
+scraper.scrap_all_pages()
 
 
 
